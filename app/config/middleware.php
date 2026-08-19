@@ -1,11 +1,22 @@
 <?php
 defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
-require_once APP_DIR . 'middlewares/StudentMiddleware.php';
+class StudentMiddleware
+{
+    public function handle($next)
+    {
+        if (!isset($_SESSION['deluna_access'])) {
+            $_SESSION['deluna_access'] = true;
+        }
 
-$config['middlewares'] = [
-    'StudentMiddleware' => new StudentMiddleware(),
-];
+        if ($_SESSION['deluna_access'] == true) {
+            return $next();
+        } else {
+            redirect('student');
+            exit;
+        }
+    }
+}
 /**
  * ------------------------------------------------------------------
  * LavaLust - an opensource lightweight PHP MVC Framework
