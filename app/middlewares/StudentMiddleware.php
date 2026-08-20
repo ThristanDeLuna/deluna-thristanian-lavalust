@@ -1,45 +1,25 @@
 <?php
 defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
+// StudentMiddleware.php
+// Simple middleware para sa protection ng /student/profile route
+
 class StudentMiddleware
 {
     public function handle(Closure $next)
     {
-        if (!isset($_SESSION['student_access']) || $_SESSION['student_access'] !== true) {
-            redirect('student');
-            exit;
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
         }
 
-        return $next();
-    }
-}
-
-// StudentMiddleware.php
-// Simple middleware para sa protection ng /student/profile route
-
-class StudentMiddleware extends Controller
-{
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    public function handle()
-    {
         // simple access condition ko lang, session variable
-        // pag wala pa, i-set ko muna as true (para makapasok pa rin
-        // pero may check pa rin na ginagawa yung middleware)
-        if (!isset($_SESSION['deluna_access'])) {
-            $_SESSION['deluna_access'] = true;
-        }
-
-        if ($_SESSION['deluna_access'] == true) {
-            // allowed, pupunta sa profile page
-            return true;
-        } else {
+        if (!isset($_SESSION['student_access']) || $_SESSION['student_access'] !== true) {
             // hindi pwede, ibalik sa home page na lang
             redirect('student');
             exit;
         }
+
+        // allowed, pupunta sa profile page
+        return $next();
     }
 }

@@ -11,13 +11,19 @@ class StudentController extends Controller
     public function __construct()
     {
         parent::__construct();
+
+        // Make sure a session is running before we read/write $_SESSION
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
     }
 
-    // home page lang, walang special data dito
     public function index()
     {
-        $data['title'] = 'Student Info Page - De Luna';
+        // Grants access to the protected profile page
+        $_SESSION['student_access'] = true;
 
+        $data['title'] = 'Student Home';
         $this->call->view('student_home', $data);
     }
 

@@ -11,7 +11,6 @@
             padding: 40px;
             text-align: center;
         }
-
         .container {
             background-color: #ffffff;
             max-width: 500px;
@@ -20,15 +19,8 @@
             border-radius: 10px;
             border: 2px solid #4a6fa5;
         }
-
-        h1 {
-            color: #2d4a7a;
-        }
-
-        p {
-            color: #555;
-        }
-
+        h1 { color: #2d4a7a; }
+        p { color: #555; }
         a {
             display: inline-block;
             margin: 10px 8px;
@@ -38,10 +30,7 @@
             text-decoration: none;
             border-radius: 5px;
         }
-
-        a:hover {
-            background-color: #35547e;
-        }
+        a:hover { background-color: #35547e; }
     </style>
 </head>
 <body>
