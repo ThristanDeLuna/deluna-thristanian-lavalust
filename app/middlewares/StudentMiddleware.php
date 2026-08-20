@@ -4,7 +4,7 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 // StudentMiddleware.php
 // Simple middleware para sa protection ng /student/profile route
 
-class StudentMiddleware
+class StudentMiddleware 
 {
     public function handle(Closure $next)
     {

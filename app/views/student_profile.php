@@ -1,63 +1,74 @@
+<?php
+defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title><?= $title ?></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?= htmlspecialchars($title ?? 'My Profile'); ?></title>
     <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --lava: #dd4814;
+            --lava-dim: #b83a10;
+            --bg: #0a0a0b;
+            --bg2: #111113;
+            --bg3: #18181b;
+            --border: rgba(255,255,255,0.07);
+            --text: #f4f4f5;
+            --text-muted: #71717a;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #eef2f7;
-            margin: 0;
-            padding: 40px;
-            text-align: center;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .container {
-            background-color: #ffffff;
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 30px;
-            border-radius: 10px;
-            border: 2px solid #4a6fa5;
-        }
-        h1 { color: #2d4a7a; }
-        table {
+
+        .card {
             width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            text-align: left;
+            max-width: 420px;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 32px;
         }
-        table td { padding: 10px; border-bottom: 1px solid #ddd; }
-        table td:first-child { font-weight: bold; color: #2d4a7a; width: 40%; }
-        .note { margin-top: 15px; font-size: 13px; color: #4a6fa5; }
-        a {
+
+        h1 { font-size: 1.25rem; margin-bottom: 20px; }
+
+        dl { display: grid; grid-template-columns: 110px 1fr; row-gap: 10px; }
+        dt { color: var(--text-muted); font-size: 0.8rem; }
+        dd { font-size: 0.9rem; }
+
+        a.logout {
             display: inline-block;
-            margin: 20px 8px 0;
-            padding: 8px 18px;
-            background-color: #4a6fa5;
-            color: white;
+            margin-top: 24px;
+            font-size: 0.85rem;
+            color: var(--lava);
             text-decoration: none;
-            border-radius: 5px;
         }
-        a:hover { background-color: #35547e; }
+
+        a.logout:hover { color: var(--lava-dim); text-decoration: underline; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>My Student Profile</h1>
-
-        <table>
-            <tr><td>Student ID</td><td><?= $student['student_id'] ?></td></tr>
-            <tr><td>Name</td><td><?= $student['name'] ?></td></tr>
-            <tr><td>Course</td><td><?= $student['course'] ?></td></tr>
-            <tr><td>Year Level</td><td><?= $student['year'] ?></td></tr>
-            <tr><td>Section</td><td><?= $student['section'] ?></td></tr>
-            <tr><td>Email</td><td><?= $student['email'] ?></td></tr>
-        </table>
-
-        <p class="note">You are seeing this page kasi pumasa ka sa StudentMiddleware check.</p>
-
-        <a href="<?= site_url('student') ?>">Home</a>
-        <a href="<?= site_url('student/profile') ?>">My Profile</a>
+    <div class="card">
+        <h1>My Profile</h1>
+        <dl>
+            <dt>Student ID</dt><dd><?= htmlspecialchars($student['student_id']); ?></dd>
+            <dt>Name</dt><dd><?= htmlspecialchars($student['name']); ?></dd>
+            <dt>Course</dt><dd><?= htmlspecialchars($student['course']); ?></dd>
+            <dt>Year</dt><dd><?= htmlspecialchars($student['year']); ?></dd>
+            <dt>Section</dt><dd><?= htmlspecialchars($student['section']); ?></dd>
+            <dt>Email</dt><dd><?= htmlspecialchars($student['email']); ?></dd>
+        </dl>
+        <a class="logout" href="<?= base_url('student/logout'); ?>">Log out</a>
     </div>
 </body>
 </html>

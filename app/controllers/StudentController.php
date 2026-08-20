@@ -20,11 +20,43 @@ class StudentController extends Controller
 
     public function index()
     {
-        // Grants access to the protected profile page
-        $_SESSION['student_access'] = true;
-
         $data['title'] = 'Student Home';
+        $data['error'] = '';
+
+        // Password comes from .env (STUDENT_ACCESS_PASSWORD). Falls back to
+        // a default only if it was never set, so the app doesn't hard-fail
+        // when someone forgets to configure it.
+        $correct_password = getenv('STUDENT_ACCESS_PASSWORD') ?: 'student123';
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $submitted = isset($_POST['password']) ? $_POST['password'] : '';
+
+            if (hash_equals($correct_password, (string) $submitted)) {
+                // Correct password -> grant access, middleware will now let
+                // the profile route through.
+                session_regenerate_id(true);
+                $_SESSION['student_access'] = true;
+
+                redirect('student/profile');
+                exit;
+            }
+
+            $data['error'] = 'Incorrect password. Please try again.';
+        }
+
+        // Not authenticated yet (or password was wrong): show the login form,
+        // do NOT set student_access.
         $this->call->view('student_home', $data);
+    }
+
+    // logs the student out by clearing the session flag the middleware checks
+    public function logout()
+    {
+        unset($_SESSION['student_access']);
+        session_regenerate_id(true);
+
+        redirect('student');
+        exit;
     }
 
     // profile page, protected by middleware
@@ -46,3 +78,4 @@ class StudentController extends Controller
         $this->call->view('student_profile', $data);
     }
 }
+
