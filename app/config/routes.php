@@ -51,3 +51,6 @@ $router->get('/student/profile', 'StudentController::profile')
        ->middleware('student_access');
 $router->get('/student/logout', 'StudentController::logout');
 
+$router->get('/users', 'UsersController::index');
+//$route['users'] = 'UsersController/index'
+
