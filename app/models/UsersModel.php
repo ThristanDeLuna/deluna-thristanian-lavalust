@@ -13,6 +13,6 @@ class UsersModel extends Model
 
     public function all()
     {
-        return $this->db->table($this->table)->get();
+        return $this->db->table($this->table)->get_all();
     }
 }
