@@ -21,26 +21,26 @@ class Auth
         ]);
     }
 
-    public function login($username, $password) {
-        $username = trim($username);
-        $result = $this->_lava->db->table('users')
-                             ->where('username', $username)
-                             ->get();
+   public function login($username, $password) {
+    $username = trim($username);
+    $result = $this->_lava->db->table('users')
+                         ->where('username', $username)
+                         ->get();
 
-        // ✅ Extract the first row safely
-        $user = is_array($result) ? reset($result) : null;
+    // Get first row (if any)
+    $user = is_array($result) ? reset($result) : null;
 
-        if ($user && password_verify($password, $user['password'])) {
-            $this->_lava->session->set_userdata([
-                'user_id'   => $user['id'],
-                'username'  => $user['username'],
-                'role'      => $user['role'],
-                'logged_in' => true
-            ]);
-            return true;
-        }
-        return false;
+    if ($user && password_verify($password, $user['password'])) {
+        $this->_lava->session->set_userdata([
+            'user_id'   => $user['id'],
+            'username'  => $user['username'],
+            'role'      => $user['role'],
+            'logged_in' => true
+        ]);
+        return true;   // ✅ MUST return true
     }
+    return false;
+}
 
     public function is_logged_in() {
         return (bool) $this->_lava->session->userdata('logged_in');

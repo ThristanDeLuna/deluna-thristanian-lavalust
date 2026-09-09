@@ -1,4 +1,16 @@
-<h1>📦 Product List</h1>
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>My App</title>
+    <link rel="stylesheet" href="<?= base_url('assets/css/style.css') ?>">
+</head>
+<body>
+    <div class="container">
+        <h1>📦 Product List</h1>
 <a href="<?= site_url('products/create') ?>" class="btn-add">➕ Add Product</a>
 <table>
     <tr>
@@ -19,3 +31,6 @@
     </tr>
     <?php endforeach; ?>
 </table>
+    </div>
+</body>
+</html>
