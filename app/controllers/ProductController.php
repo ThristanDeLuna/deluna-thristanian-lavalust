@@ -1,4 +1,6 @@
 <?php
+defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
+
 class ProductController extends Controller
 {
     public function __construct() {
@@ -12,33 +14,33 @@ class ProductController extends Controller
     }
 
     public function create() {
-        if ($this->io->method() == 'post') {
-            $this->ProductModel->create_product([
-                'product_name' => filter_io('string', $this->io->post('product_name')),
-                'description'  => filter_io('string', $this->io->post('description')),
-                'price'        => $this->io->post('price'),
-                'quantity'     => $this->io->post('quantity'),
-            ]);
-            redirect('products');
-        } else {
-            $this->call->view('products/create');
-        }
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $this->ProductModel->create_product([
+            'product_name' => htmlspecialchars($this->io->post('product_name')),
+            'description'  => htmlspecialchars($this->io->post('description')),
+            'price'        => $this->io->post('price'),
+            'quantity'     => $this->io->post('quantity'),
+        ]);
+        redirect('products');
+    } else {
+        $this->call->view('products/create');
     }
+}
 
     public function edit($id) {
-        if ($this->io->method() == 'post') {
-            $this->ProductModel->update_product($id, [
-                'product_name' => filter_io('string', $this->io->post('product_name')),
-                'description'  => filter_io('string', $this->io->post('description')),
-                'price'        => $this->io->post('price'),
-                'quantity'     => $this->io->post('quantity'),
-            ]);
-            redirect('products');
-        } else {
-            $data['product'] = $this->ProductModel->get_product($id);
-            $this->call->view('products/edit', $data);
-        }
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $this->ProductModel->update_product($id, [
+            'product_name' => htmlspecialchars($this->io->post('product_name')),
+            'description'  => htmlspecialchars($this->io->post('description')),
+            'price'        => $this->io->post('price'),
+            'quantity'     => $this->io->post('quantity'),
+        ]);
+        redirect('products');
+    } else {
+        $data['product'] = $this->ProductModel->get_product($id);
+        $this->call->view('products/edit', $data);
     }
+}
 
     public function delete($id) {
         $this->ProductModel->delete_product($id);
