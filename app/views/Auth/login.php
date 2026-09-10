@@ -11,7 +11,7 @@
 <form method="post" action="<?= site_url('auth/login') ?>">
     <input type="text" name="username" placeholder="Username" required>
     <input type="password" name="password" placeholder="Password" required>
-    <button type="submit">Login</button>
+    <button type="submit">LogIn</button>
 </form>
 <p>No account? <a href="<?= site_url('auth/register') ?>">Register</a></p>
     </div>
