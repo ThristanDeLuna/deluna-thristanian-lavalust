@@ -44,13 +44,19 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 */
 /** @var object $router **/
 
-$router->get('/', 'UsersController::index');
-$router->get('/student', 'StudentController::index');
-$router->post('/student', 'StudentController::index');
-$router->get('/student/profile', 'StudentController::profile')
-       ->middleware('student_access');
-$router->get('/student/logout', 'StudentController::logout');
+// Public authentication routes
+$router->match('/auth/login', 'AuthController::login', ['GET', 'POST']);
+$router->match('/auth/register', 'AuthController::register', ['GET', 'POST']);
+$router->get('/auth/logout', 'AuthController::logout');
 
-$router->get('/users', 'UsersController::index');
-//$route['users'] = 'UsersController/index'
+// Root – redirect to login
+$router->get('/', 'AuthController::login');
+
+// Product CRUD – protected by 'auth' middleware
+$router->group(['prefix' => '/products', 'middleware' => 'auth'], function ($router) {
+    $router->get('/', 'ProductController::index');
+    $router->match('/create', 'ProductController::create', ['GET', 'POST']);
+    $router->match('/edit/{id}', 'ProductController::edit', ['GET', 'POST']);
+    $router->get('/delete/{id}', 'ProductController::delete');
+});
 
